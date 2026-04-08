@@ -1,0 +1,85 @@
+@use '../auth-shared' as *;
+@use '../../../scss/variables' as *;
+
+// ─── Page & Card Layout ───────────────────────────────
+@include auth-page-layout('.register-page', '.register-card');
+@include auth-responsive('.register-page', '.register-card');
+@include auth-rtl('.register-page', '.register-card');
+
+// ─── Page-specific Styles ─────────────────────────────
+.register-page {
+    @media (min-width: 992px) {
+        position: relative;
+        overflow: hidden;
+        display: block; // Allow layering
+        background: $text-dark;
+
+        @include auth-visual-layout;
+
+        .register-card {
+            @include auth-glass-card(flex-start, auto, 100px 50px 60px);
+            border-inline-end: 1px solid rgba(255, 255, 255, 0.08); // More visible border
+            
+            .register-header {
+                @include auth-glass-header;
+            }
+
+            .register-form {
+                .section-title {
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: $primary-blue;
+                    margin: 25px 0 15px;
+                }
+
+                .form-grid {
+                    display: flex;
+                    flex-direction: column; // Force single column to fit 500px width
+                    gap: 0;
+                }
+
+                .full-width {
+                    width: 100%;
+                }
+
+                // Glass style for inputs within the form
+                @include auth-glass-input;
+
+                .register-btn {
+                    @include auth-glass-btn;
+                    margin-top: 30px;
+                }
+            }
+
+            .register-footer {
+                @include auth-glass-footer;
+                padding-bottom: 40px;
+            }
+        }
+    }
+
+    // Default/Mobile styles
+    .register-card {
+        .register-header {
+            @include auth-header;
+        }
+        .register-form {
+            .section-title {
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: $primary-blue;
+                margin: 20px 0 10px;
+            }
+            .form-grid {
+                display: flex;
+                flex-direction: column;
+            }
+            .register-btn {
+                @include auth-btn;
+            }
+        }
+        .register-footer {
+            @include auth-footer;
+        }
+    }
+}

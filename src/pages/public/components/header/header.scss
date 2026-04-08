@@ -1,0 +1,404 @@
+@use '../../../../scss/variables' as *;
+
+.header {
+    width: 100%;
+    z-index: 1000;
+    // Specify properties to avoid flashing background transitions
+    transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+
+    // Default & Sticky
+    &.sticky,
+    &.sub-header {
+        position: fixed;
+        top: 0;
+        padding: 12px 0; // Slightly tighter
+        background: rgba(255, 255, 255, 0.85); // More solid but still glass
+        backdrop-filter: blur(20px);
+        box-shadow: $shadow-soft;
+        border-bottom: 1px solid $glass-border;
+
+        .brand-name {
+            color: $primary-blue;
+        }
+
+        .nav-link {
+            color: $text-dark;
+
+            &:hover,
+            &.active {
+                color: $primary-blue;
+            }
+        }
+
+        .lang-switcher,
+        .cta-button {
+            color: $primary-blue;
+        }
+    }
+
+    // Home Initial State
+    &.home-header.initial {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 25px 0;
+        background: transparent;
+        border-bottom: none;
+        box-shadow: none;
+
+        .brand-name {
+            color: $white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-link {
+            color: $white;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+
+            &:hover,
+            &.active {
+                color: $primary-blue;
+            }
+        }
+
+        .lang-switcher,
+        .cta-button {
+            color: $white;
+        }
+    }
+
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        z-index: 1002;
+
+        .lang-switcher {
+            background: rgba($primary-blue, 0.08);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: $transition-smooth;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            &:hover {
+                background: rgba($primary-blue, 0.15);
+            }
+
+            .globe-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            @media (max-width: 576px) {
+                .lang-text {
+                    display: none;
+                }
+
+                padding: 10px;
+            }
+        }
+    }
+
+    .logo-wrapper {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 1002;
+
+        .brand-name {
+            font-family: $font-primary;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: $primary-blue;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            transition: $transition-smooth;
+
+            @media (max-width: 576px) {
+                font-size: 1.3rem;
+            }
+        }
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 25px;
+
+        .nav-link {
+            font-family: $font-primary;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: $text-dark;
+            transition: $transition-smooth;
+            position: relative;
+            cursor: pointer;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: $primary-blue;
+                transition: $transition-smooth;
+            }
+
+            &:hover,
+            &.active {
+                color: $primary-blue;
+
+                &::after {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    .cta-button {
+        padding: 10px 20px;
+        background: $primary-blue;
+        color: $white !important;
+        font-weight: 700;
+        border-radius: 12px;
+        transition: $transition-smooth;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 136, 255, 0.2);
+
+        .login-icon-mobile {
+            display: none;
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 136, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            padding: 10px;
+
+            .btn-text {
+                display: none;
+            }
+
+            .login-icon-mobile {
+                display: block;
+                width: 20px;
+            }
+        }
+    }
+
+    .mobile-menu-toggle {
+        display: none;
+        background: transparent; // Remove background when not active
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        cursor: pointer;
+        padding: 0;
+        position: relative;
+        transition: $transition-smooth;
+
+        @media (max-width: 768px) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger-box {
+            width: 24px;
+            height: 18px;
+            position: relative;
+
+            .hamburger-line {
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                background: $primary-blue;
+                border-radius: 2px;
+                transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+                left: 0;
+
+                &.top {
+                    top: 0;
+                }
+
+                &.middle {
+                    top: 8px;
+                }
+
+                &.bottom {
+                    top: 16px;
+                }
+            }
+        }
+
+        &.active {
+            background: rgba($primary-blue, 0.1); // Only show background when active
+
+            .hamburger-line {
+                &.top {
+                    transform: translateY(8px) rotate(45deg);
+                }
+
+                &.middle {
+                    opacity: 0;
+                }
+
+                &.bottom {
+                    transform: translateY(-8px) rotate(-45deg);
+                }
+            }
+        }
+    }
+
+    .mobile-only-actions {
+        display: none;
+    }
+}
+
+// Mobile Responsive
+@media (max-width: 768px) {
+    .header {
+        position: fixed !important; // Force fixed on mobile to avoid absolute/fixed jumps
+        top: 0 !important;
+        padding: 12px 0 !important;
+        background: transparent; // Default to transparent if not scrolled/active
+
+        &.mobile-menu-active,
+        &.scrolled,
+        &.sticky {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px);
+            box-shadow: $shadow-soft;
+
+            .logo-wrapper .brand-name {
+                color: $primary-blue !important;
+            }
+        }
+    }
+
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 998;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease;
+
+        &.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 280px;
+        height: 100vh;
+        background: $white;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow-y: auto;
+        z-index: 999;
+        padding: 70px 25px 30px; // Reduced padding to fit more content
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+        display: flex;
+        
+        // Use opacity and visibility for safer transitions
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                    opacity 0.4s ease, 
+                    visibility 0.4s;
+        transform: translateX(100%); 
+
+        [dir="rtl"] & {
+            right: auto;
+            left: 0;
+            transform: translateX(-100%);
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.1);
+        }
+
+        &.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto; // Enable interaction when open
+            transform: translateX(0);
+
+            [dir="rtl"] & {
+                transform: translateX(0);
+            }
+        }
+
+        .nav-link {
+            font-size: 1.05rem; // Slightly smaller font
+            font-weight: 700;
+            padding: 12px 0; // Tighter spacing
+            width: 100%;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: $text-dark !important;
+
+            [dir="rtl"] & {
+                text-align: right;
+            }
+        }
+
+        .mobile-only-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; // Tighter gap
+            width: 100%;
+            margin-top: 15px; // Reduced margin
+
+            .mobile-action-btn {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+                padding: 10px 15px; // Tighter padding
+                border-radius: 12px;
+                font-weight: 700;
+                font-size: 0.95rem; // Slightly smaller
+                border: none;
+                cursor: pointer;
+                transition: $transition-smooth;
+                background: rgba($primary-blue, 0.05);
+                color: $primary-blue;
+
+                &.login {
+                    background: $primary-blue;
+                    color: $white;
+                }
+            }
+        }
+    }
+}

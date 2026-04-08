@@ -1,0 +1,135 @@
+@use '../auth-shared' as *;
+@use '../../../scss/variables' as *;
+
+// ─── Page & Card Layout ───────────────────────────────
+@include auth-page-layout('.verify-email-page', '.verify-card');
+@include auth-responsive('.verify-email-page', '.verify-card');
+@include auth-rtl('.verify-email-page', '.verify-card');
+
+.verify-email-page {
+    @media (min-width: 992px) {
+        position: relative;
+        overflow: hidden;
+        display: block; // Allow layering
+        background: $text-dark;
+
+        @include auth-visual-layout;
+
+        .verify-card {
+            @include auth-glass-card;
+            border-inline-end: 1px solid rgba(255, 255, 255, 0.08);
+
+            .verify-header {
+                @include auth-glass-header;
+            }
+
+            .verify-form {
+                .code-input-wrapper {
+                    margin-bottom: 30px;
+
+                    .code-input {
+                        width: 100%;
+                        padding: 15px;
+                        font-size: 2rem;
+                        text-align: center;
+                        letter-spacing: 1rem;
+                        background: rgba(255, 255, 255, 0.03) !important;
+                        border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+                        border-radius: 12px;
+                        color: $white !important;
+                        font-weight: 600;
+                        backdrop-filter: blur(4px) !important;
+                        transition: all 0.3s ease;
+
+                        &::placeholder {
+                            color: rgba($white, 0.3) !important;
+                        }
+
+                        &:focus {
+                            background: rgba(255, 255, 255, 0.05) !important;
+                            border-color: rgba($white, 0.4) !important;
+                            box-shadow: 0 0 0 4px rgba($white, 0.05) !important;
+                            outline: none;
+                        }
+                    }
+                }
+
+                .verify-btn {
+                    @include auth-glass-btn;
+                }
+            }
+
+            .verify-footer {
+                @include auth-glass-footer;
+                margin-top: 30px;
+
+                .resend-link {
+                    background: none;
+                    border: none;
+                    color: $white;
+                    font-weight: 700;
+                    cursor: pointer;
+                    padding: 0;
+                    margin-left: 5px;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+
+                    &:disabled {
+                        color: rgba($white, 0.4);
+                        cursor: not-allowed;
+                    }
+                }
+            }
+        }
+    }
+
+    // Default/Mobile styles
+    .verify-card {
+        .verify-header {
+            @include auth-header;
+        }
+
+        .verify-form {
+            .code-input-wrapper {
+                .code-input {
+                    width: 100%;
+                    padding: 15px;
+                    font-size: 1.8rem;
+                    text-align: center;
+                    letter-spacing: 0.5rem;
+                    border: 2px solid #e0e0e0;
+                    border-radius: 12px;
+                    color: $text-dark;
+                    transition: all 0.3s ease;
+
+                    &:focus {
+                        border-color: $primary-blue;
+                        outline: none;
+                    }
+                }
+            }
+            .verify-btn {
+                @include auth-btn;
+            }
+        }
+
+        .verify-footer {
+            @include auth-footer;
+            .resend-link {
+                background: none;
+                border: none;
+                color: $primary-blue;
+                font-weight: 600;
+                cursor: pointer;
+                padding: 0;
+                margin-left: 5px;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
