@@ -15,8 +15,10 @@ import {
   ChevronRight,
   MessageSquare,
   ClipboardList,
+  Bell,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { getRoleBasePath } from "../../../../shared/utils/roleRoutes";
 import "./ShippingSidebar.scss";
 import "../../../../scss/premium_theme.scss";
 
@@ -24,6 +26,8 @@ const ShippingSidebar = ({ isCollapsed, setIsCollapsed }) => {
 
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const basePath = getRoleBasePath(user?.role);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -31,32 +35,37 @@ const ShippingSidebar = ({ isCollapsed, setIsCollapsed }) => {
 
   const navItems = [
     {
-      path: "/shipping-company",
+      path: basePath,
       icon: LayoutDashboard,
       label: t("nav.dashboard", { defaultValue: "Dashboard" }),
     },
     {
-      path: "/shipping-company/orders",
+      path: `${basePath}/orders`,
       icon: ClipboardList,
       label: t("nav.orders", { defaultValue: "Active Deliveries" }),
     },
     {
-      path: "/shipping-company/contracts",
+      path: `${basePath}/contracts`,
       icon: Handshake,
       label: t("nav.contracts", { defaultValue: "Contracts" }),
     },
     {
-      path: "/shipping-company/chat",
+      path: `${basePath}/chat`,
       icon: MessageSquare,
       label: t("nav.chat", { defaultValue: "Chat" }),
     },
     {
-      path: "/shipping-company/profile",
+      path: `${basePath}/notifications`,
+      icon: Bell,
+      label: t("nav.notifications", { defaultValue: "Notifications" }),
+    },
+    {
+      path: `${basePath}/profile`,
       icon: UserCircle,
       label: t("nav.profile", { defaultValue: "Profile" }),
     },
     {
-      path: "/shipping-company/settings",
+      path: `${basePath}/settings`,
       icon: Settings,
       label: t("nav.settings", { defaultValue: "Settings" }),
     },
@@ -94,7 +103,7 @@ const ShippingSidebar = ({ isCollapsed, setIsCollapsed }) => {
             key={item.path}
             to={item.path}
             className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
-            end={item.path === "/shipping-company"}
+            end={item.path === basePath}
           >
             <item.icon className="nav-icon" size={24} />
             {!isCollapsed && <span className="nav-label">{item.label}</span>}

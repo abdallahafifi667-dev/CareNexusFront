@@ -20,9 +20,8 @@ import {
   PlusCircle,
   ShoppingBag,
   Search,
+  Bell,
 } from "lucide-react";
-
-import { motion } from "framer-motion";
 import "./PatientSidebar.scss";
 
 const PatientSidebar = ({ isCollapsed, setIsCollapsed }) => {
@@ -92,6 +91,12 @@ const PatientSidebar = ({ isCollapsed, setIsCollapsed }) => {
       feature: "knowledge_ai",
     },
     {
+      path: "/patient/notifications",
+      icon: Bell,
+      label: t("nav.notifications", { defaultValue: "Notifications" }),
+      feature: "notifications",
+    },
+    {
       path: "/patient/settings",
       icon: Settings,
       label: t("nav.settings", { defaultValue: "Settings" }),
@@ -103,21 +108,12 @@ const PatientSidebar = ({ isCollapsed, setIsCollapsed }) => {
   const navItems = filterNavItems(allNavItems, role);
 
   return (
-    <motion.aside
-      className={`patient-sidebar ${isCollapsed ? "collapsed" : ""}`}
-      initial={false}
-      animate={{ width: isCollapsed ? "80px" : "280px" }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
+    <aside className={`patient-sidebar ${isCollapsed ? "collapsed" : ""}`}>
       <div className="sidebar-header">
         {!isCollapsed && (
-          <motion.div
-            className="logo"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            Care<span>Nexus</span>
-          </motion.div>
+          <div className="logo">
+            {t("nav.brand_name", { defaultValue: "CareNexus" })}
+          </div>
         )}
         <button
           className="collapse-btn"
@@ -147,7 +143,7 @@ const PatientSidebar = ({ isCollapsed, setIsCollapsed }) => {
           {!isCollapsed && <span className="nav-label">{t("nav.logout")}</span>}
         </button>
       </div>
-    </motion.aside>
+    </aside>
   );
 };
 

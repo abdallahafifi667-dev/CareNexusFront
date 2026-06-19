@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import DoctorSidebar from "../DoctorSidebar/DoctorSidebar";
 import DoctorHeader from "../DoctorHeader/DoctorHeader";
@@ -14,7 +13,7 @@ const DoctorLayout = ({ children, title }) => {
   };
 
   return (
-    <div className={`doctor-layout ${isCollapsed ? "sidebar-collapsed" : ""}`}>
+    <div className={`doctor-layout ${isCollapsed ? "sidebar-collapsed" : ""} ${isMobileMenuOpen ? "mobile-menu-open" : ""}`}>
       <div
         className={`sidebar-overlay ${isMobileMenuOpen ? "show" : ""}`}
         onClick={toggleMobileMenu}
@@ -36,7 +35,6 @@ const DoctorLayout = ({ children, title }) => {
       <FloatingChatContainer />
     </div>
   );
-
 };
 
 export default DoctorLayout;

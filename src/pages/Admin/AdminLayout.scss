@@ -1,0 +1,156 @@
+@use "../../scss/variables" as *;
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f7fa;
+  position: relative;
+  overflow-x: hidden;
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 950;
+    opacity: 0;
+    visibility: hidden;
+    transition: $transition-smooth;
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .sidebar-wrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 1000;
+    transition: $transition-smooth;
+  }
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    margin-left: 280px;
+    transition: $transition-smooth;
+  }
+
+  &.sidebar-collapsed .main-content {
+    margin-left: 80px;
+  }
+
+  .content-inner {
+    padding: 2rem;
+    flex: 1;
+
+    @media (max-width: 768px) {
+      padding: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 0.5rem;
+    }
+  }
+}
+
+// ===== RESPONSIVE =====
+
+// Tablet and below
+@media (max-width: 1024px) {
+  .admin-layout {
+    .main-content {
+      margin-left: 0 !important;
+    }
+
+    .sidebar-wrapper {
+      left: -280px;
+      right: auto;
+      width: 280px;
+      height: 100vh;
+
+      &.show-mobile {
+        left: 0;
+        right: auto;
+      }
+    }
+
+    &.sidebar-collapsed .sidebar-wrapper {
+      left: -280px;
+      right: auto;
+    }
+
+    &.sidebar-collapsed .main-content {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+// Mobile
+@media (max-width: 768px) {
+  .admin-layout {
+    .content-inner {
+      padding: 0.75rem;
+    }
+  }
+}
+
+// Small mobile
+@media (max-width: 480px) {
+  .admin-layout {
+    .content-inner {
+      padding: 0.5rem;
+    }
+  }
+}
+
+[dir="rtl"] {
+  .admin-layout {
+    // Keep sidebar and content structure same as LTR
+    .sidebar-wrapper {
+      left: 0;
+      right: auto;
+    }
+
+    .main-content {
+      margin-left: 280px;
+      margin-right: 0;
+    }
+
+    &.sidebar-collapsed .main-content {
+      margin-left: 80px;
+      margin-right: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar-wrapper {
+        left: -280px;
+        right: auto;
+
+        &.show-mobile {
+          left: 0;
+          right: auto;
+        }
+      }
+
+      &.sidebar-collapsed .sidebar-wrapper {
+        left: -280px;
+        right: auto;
+      }
+
+      .main-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+  }
+}

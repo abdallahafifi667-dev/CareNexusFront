@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Loader from '../../shared/components/loader/Loader';
 import AdminLayout from './AdminLayout';
 
 // Lazy load pages
@@ -10,11 +9,13 @@ const VerificationCenter = lazy(() => import('./Verification/VerificationCenter'
 const StoreManagement = lazy(() => import('./Ecommerce/StoreManagement'));
 const ContentModeration = lazy(() => import('./Blog/ContentModeration'));
 const AdminSettings = lazy(() => import('./AdminSettings'));
+const UniversalNotifications = lazy(() => import('../../shared/components/Notifications/UniversalNotifications'));
+const UniversalProfile = lazy(() => import('../../shared/components/Profile/UniversalProfile'));
 const NotFound = lazy(() => import('../public/NotFound/NotFound'));
 
 const AdminRoute = () => {
     return (
-        <Suspense fallback={<Loader loading={true} />}>
+        <Suspense fallback={null}>
             <Routes>
                 <Route element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
@@ -22,7 +23,9 @@ const AdminRoute = () => {
                     <Route path="verification" element={<VerificationCenter />} />
                     <Route path="ecommerce" element={<StoreManagement />} />
                     <Route path="blog" element={<ContentModeration />} />
+                    <Route path="profile" element={<UniversalProfile />} />
                     <Route path="settings" element={<AdminSettings />} />
+                    <Route path="notifications" element={<UniversalNotifications />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
             </Routes>

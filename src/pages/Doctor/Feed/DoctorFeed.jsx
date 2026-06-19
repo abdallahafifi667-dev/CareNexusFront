@@ -8,15 +8,13 @@ import {
 } from "../stores/postSlice";
 import { setHeaderTitle } from "../stores/doctorSlice";
 import {
-    User,
     Image,
     Video,
     Calendar,
     Newspaper,
-    Search,
-    TrendingUp,
     MessageSquare,
-    Plus,
+    Filter,
+    X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import PostCard from "../../../shared/components/PostCard/PostCard";
@@ -24,7 +22,6 @@ import CreatePostModal from "../../../shared/components/CreatePostModal/CreatePo
 import FloatingChatBox from "../../../shared/components/Social/FloatingChatBox/FloatingChatBox";
 import useInfiniteScroll from "../../../shared/hooks/useInfiniteScroll";
 import socialApi from "../../../utils/socialApi";
-import { toast } from "react-hot-toast";
 import "./DoctorFeed.scss";
 
 const DoctorFeed = () => {
@@ -37,6 +34,8 @@ const DoctorFeed = () => {
     const [friends, setFriends] = useState([]);
     const [activeChat, setActiveChat] = useState(null);
     const [loadingFriends, setLoadingFriends] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredPosts, setFilteredPosts] = useState([]);
     const isRtl = i18n.language === "ar";
 
     useEffect(() => {
@@ -49,6 +48,22 @@ const DoctorFeed = () => {
             dispatch(resetPostState());
         };
     }, [dispatch, t]);
+
+    useEffect(() => {
+        if (selectedCategory) {
+            setFilteredPosts(
+                globalPosts.filter(
+                    (post) =>
+                        post.category === selectedCategory ||
+                        post.categoryId === selectedCategory ||
+                        post.category?.id === selectedCategory ||
+                        post.category?._id === selectedCategory
+                )
+            );
+        } else {
+            setFilteredPosts(globalPosts);
+        }
+    }, [selectedCategory, globalPosts]);
 
     const loadFriends = async () => {
         setLoadingFriends(true);
@@ -91,9 +106,74 @@ const DoctorFeed = () => {
         visible: { y: 0, opacity: 1 },
     };
 
+    const displayPosts = selectedCategory ? filteredPosts : globalPosts;
+
     return (
         <div className={`doctor-feed-container ${isRtl ? "rtl" : ""}`}>
             <div className="feed-layout">
+                <aside className="feed-sidebar-left">
+                    <div className="user-short-profile floating-card">
+                        <div className="cover-bg"></div>
+                        <div className="avatar-wrapper">
+                            <img
+                                src={
+                                    user?.avatar ||
+                                    "https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_1280.png"
+                                }
+                                alt="user"
+                            />
+                        </div>
+                        <div className="user-details">
+                            <h3>{user?.username || t("common.you", "You")}</h3>
+                            <p>{t("common.doctor", "Doctor")}</p>
+                        </div>
+                        <div className="stats-row">
+                            <div className="stat">
+                                <span className="label">{t("posts.my_posts", "My Posts")}</span>
+                                <span className="value">
+                                    {globalPosts.filter((post) => post.userId === user?.id || post.user?._id === user?._id).length || 0}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="categories-card floating-card">
+                        <div className="categories-header">
+                            <h4>{t("posts.health_topics", "Health Topics")}</h4>
+                            {selectedCategory && (
+                                <button
+                                    className="clear-filter-btn"
+                                    onClick={() => setSelectedCategory(null)}
+                                    title={t("common.clear_filter", "Clear filter")}
+                                >
+                                    <X size={14} />
+                                </button>
+                            )}
+                        </div>
+                        <div className="tags-list">
+                            {categories.map((cat) => (
+                                <div
+                                    key={cat.id || cat._id || cat.name}
+                                    className={`tag-item ${selectedCategory === (cat.id || cat._id || cat.name) ? "active" : ""}`}
+                                    onClick={() =>
+                                        setSelectedCategory(
+                                            selectedCategory === (cat.id || cat._id || cat.name)
+                                                ? null
+                                                : cat.id || cat._id || cat.name
+                                        )
+                                    }
+                                >
+                                    <span className="hash">#</span>
+                                    <span>{cat.text || cat.name}</span>
+                                </div>
+                            ))}
+                            {categories.length === 0 && !isLoading && (
+                                <p className="no-categories">{t("posts.no_categories", "No categories available")}</p>
+                            )}
+                        </div>
+                    </div>
+                </aside>
+
                 {/* Main Content: Feed */}
                 <main className="feed-main-content">
                     {/* Start Post Banner */}
@@ -149,8 +229,18 @@ const DoctorFeed = () => {
                     <div className="feed-divider">
                         <hr />
                         <span>
-                            {t("posts.sort_by", "Sort by")}:{" "}
-                            <b>{t("posts.recent", "Recent")}</b>
+                            {selectedCategory ? (
+                                <span className="filter-active">
+                                    <Filter size={14} />
+                                    {t("posts.filtered_by", "Filtered by")}:{" "}
+                                    <b>{categories.find(c => (c.id || c._id || c.name) === selectedCategory)?.text || categories.find(c => (c.id || c._id || c.name) === selectedCategory)?.name || selectedCategory}</b>
+                                </span>
+                            ) : (
+                                <>
+                                    {t("posts.sort_by", "Sort by")}:{" "}
+                                    <b>{t("posts.recent", "Recent")}</b>
+                                </>
+                            )}
                         </span>
                     </div>
 
@@ -162,35 +252,41 @@ const DoctorFeed = () => {
                         animate="visible"
                     >
                         <AnimatePresence>
-                            {globalPosts.map((post, index) => (
+                            {displayPosts.map((post, index) => (
                                 <motion.div
-                                    key={post.id || index}
+                                    key={post.id || post._id || index}
                                     variants={itemVariants}
-                                    ref={index === globalPosts.length - 1 ? lastElementRef : null}
+                                    ref={index === displayPosts.length - 1 ? lastElementRef : null}
                                 >
                                     <PostCard post={post} />
                                 </motion.div>
                             ))}
+
+                            {isLoading && (
+                                <div className="feed-loader">
+                                    <div className="spinner"></div>
+                                </div>
+                            )}
+
+                            {!isLoading && displayPosts.length === 0 && (
+                                <div className="empty-feed">
+                                    <MessageSquare size={64} />
+                                    <h3>
+                                        {selectedCategory
+                                            ? t("posts.no_posts_in_category", "No posts in this category")
+                                            : t("posts.empty_feed", "No posts available yet.")}
+                                    </h3>
+                                    <p>
+                                        {selectedCategory
+                                            ? t("posts.try_other_category", "Try selecting a different category")
+                                            : t(
+                                                "posts.empty_feed_hint",
+                                                "Be the first to share something with the community!",
+                                            )}
+                                    </p>
+                                </div>
+                            )}
                         </AnimatePresence>
-
-                        {isLoading && (
-                            <div className="feed-loader">
-                                <div className="spinner"></div>
-                            </div>
-                        )}
-
-                        {!isLoading && globalPosts.length === 0 && (
-                            <div className="empty-feed">
-                                <MessageSquare size={64} />
-                                <h3>{t("posts.empty_feed", "No posts available yet.")}</h3>
-                                <p>
-                                    {t(
-                                        "posts.empty_feed_hint",
-                                        "Be the first to share something with the community!",
-                                    )}
-                                </p>
-                            </div>
-                        )}
                     </motion.div>
                 </main>
 
@@ -264,4 +360,3 @@ const DoctorFeed = () => {
 };
 
 export default DoctorFeed;
-

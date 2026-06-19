@@ -2,7 +2,6 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 const NotFound = lazy(() => import("../public/NotFound/NotFound"));
 import Loader from "../../shared/components/loader/Loader";
-import Seo from "../../shared/components/seo/Seo";
 import { doctorRouteMeta, defaultDoctorMeta } from "../../shared/components/seo/routeMeta";
 
 // Placeholder children pages can be imported here
@@ -10,6 +9,7 @@ import { doctorRouteMeta, defaultDoctorMeta } from "../../shared/components/seo/
 import DoctorLayout from "./components/DoctorLayout/DoctorLayout";
 import KnowledgeAI from "../public/KnowledgeAI/KnowledgeAI";
 import MedicalAI from "../public/MedicalAI/MedicalAI";
+import DrugSearch from "../public/DrugSearch/DrugSearch";
 const DoctorOrders = lazy(() => import("./Orders/DoctorOrders"));
 const DoctorDashboard = lazy(() => import("./Dashboard/DoctorDashboard"));
 const DoctorProfile = lazy(() => import("./Profile/DoctorProfile"));
@@ -20,6 +20,7 @@ const DoctorReviews = lazy(() => import("./Reviews/DoctorReviews"));
 const DoctorFeed = lazy(() => import("./Feed/DoctorFeed"));
 const PostDetail = lazy(() => import("./Feed/PostDetail"));
 const AdvancedSearchPage = lazy(() => import("../../shared/components/Search/AdvancedSearchPage"));
+const UniversalNotifications = lazy(() => import("../../shared/components/Notifications/UniversalNotifications"));
 const SocialChat = lazy(() => import("../../shared/components/Social/SocialChat"));
 const PublicProfile = lazy(() => import("../../shared/components/Social/PublicProfile/PublicProfile"));
 const Marketplace = lazy(
@@ -34,6 +35,7 @@ const CheckoutPage = lazy(
 
 import { useSelector } from "react-redux";
 import { canAccess } from "./utils/permissions";
+import Seo from "../../shared/components/SEO/SEO";
 
 const DoctorRoute = () => {
   const location = useLocation();
@@ -41,10 +43,10 @@ const DoctorRoute = () => {
   const role = user?.role;
 
   const getRouteMetaKey = (pathname) => {
-    if (/^\/doctor\/orders\/[^/]+$/.test(pathname)) return '/doctor/orders/:id';
-    if (/^\/doctor\/feed\/post\/[^/]+$/.test(pathname)) return '/doctor/feed/post/:id';
-    if (/^\/doctor\/profile\/[^/]+$/.test(pathname)) return '/doctor/profile/:userId';
-    if (/^\/doctor\/marketplace\/[^/]+$/.test(pathname)) return '/doctor/marketplace/:id';
+    if (/^(\/doctor|\/nursing)\/orders\/[^/]+$/.test(pathname)) return '/doctor/orders/:id';
+    if (/^(\/doctor|\/nursing)\/feed\/post\/[^/]+$/.test(pathname)) return '/doctor/feed/post/:id';
+    if (/^(\/doctor|\/nursing)\/profile\/[^/]+$/.test(pathname)) return '/doctor/profile/:userId';
+    if (/^(\/doctor|\/nursing)\/marketplace\/[^/]+$/.test(pathname)) return '/doctor/marketplace/:id';
     return pathname;
   };
 
@@ -63,6 +65,7 @@ const DoctorRoute = () => {
           <Route path="profile" element={<DoctorProfile />} />
           <Route path="profile/:userId" element={<PublicProfile />} />
           <Route path="settings" element={<DoctorSettings />} />
+          <Route path="notifications" element={<UniversalNotifications />} />
           <Route path="chat" element={<DoctorChat />} />
           <Route path="search" element={<AdvancedSearchPage />} />
           <Route path="social-chat" element={<SocialChat />} />
@@ -77,6 +80,7 @@ const DoctorRoute = () => {
 
           <Route path="medical-ai" element={<MedicalAI />} />
           <Route path="knowledge-ai" element={<KnowledgeAI />} />
+          <Route path="drug-search" element={<DrugSearch />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </DoctorLayout>

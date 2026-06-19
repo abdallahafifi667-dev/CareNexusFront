@@ -1,30 +1,38 @@
-import React from 'react';
+import React, { useState, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import AdminSidebar from './components/AdminSidebar';
 import AdminTopBar from './components/AdminTopBar';
-import { motion, AnimatePresence } from 'framer-motion';
+import FloatingChatContainer from '../../shared/components/Social/FloatingChatBox/FloatingChatContainer';
+import './AdminLayout.scss';
 
 const AdminLayout = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 flex">
-      <AdminSidebar />
-      
-      <main className="flex-1 ml-72 flex flex-col min-h-screen">
-        <AdminTopBar />
-        
-        <div className="p-8 flex-1">
-          <AnimatePresence mode="wait">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </main>
+    <div className={`admin-layout ${isCollapsed ? 'sidebar-collapsed' : ''} ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+      <div
+        className={`sidebar-overlay ${isMobileMenuOpen ? 'show' : ''}`}
+        onClick={toggleMobileMenu}
+      ></div>
+
+      <div className={`sidebar-wrapper ${isMobileMenuOpen ? 'show-mobile' : ''}`}>
+        <AdminSidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+      </div>
+
+      <div className="main-content">
+        <AdminTopBar onMenuClick={toggleMobileMenu} />
+        <main className="content-inner">
+          <Suspense fallback={null}>
+            <Outlet />
+          </Suspense>
+        </main>
+      </div>
+      <FloatingChatContainer />
     </div>
   );
 };

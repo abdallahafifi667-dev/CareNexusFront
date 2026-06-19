@@ -9,8 +9,10 @@ const ActiveOrders = lazy(() => import('./ActiveOrders/ActiveOrders'));
 const CompletedOrders = lazy(() => import('./CompletedOrders/CompletedOrders'));
 const ShippingContracts = lazy(() => import('./Contracts/ShippingContracts'));
 const DrugSearch = lazy(() => import('../public/DrugSearch/DrugSearch'));
-const ShippingProfile = lazy(() => import('./Profile/ShippingProfile'));
+const UniversalProfile = lazy(() => import('../../shared/components/Profile/UniversalProfile'));
 const SocialChat = lazy(() => import('../../shared/components/Social/SocialChat'));
+const ShippingSettings = lazy(() => import('./Settings/ShippingSettings'));
+const UniversalNotifications = lazy(() => import('../../shared/components/Notifications/UniversalNotifications'));
 
 const ShippingCompanyRoute = () => {
     return (
@@ -18,13 +20,15 @@ const ShippingCompanyRoute = () => {
             <ShippingLayout>
                 <Routes>
                     <Route path="/" element={<ShippingDashboard />} />
+                    <Route path="/orders" element={<ActiveOrders />} />
                     <Route path="/active-orders" element={<ActiveOrders />} />
                     <Route path="/completed" element={<CompletedOrders />} />
                     <Route path="/contracts" element={<ShippingContracts />} />
+                    <Route path="/notifications" element={<UniversalNotifications />} />
                     <Route path="/drug-search" element={<DrugSearch />} />
-                    <Route path="/profile" element={<ShippingProfile />} />
+                    <Route path="/profile" element={<UniversalProfile />} />
+                    <Route path="/settings" element={<ShippingSettings />} />
                     <Route path="/chat" element={<SocialChat />} />
-
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </ShippingLayout>
@@ -33,3 +37,4 @@ const ShippingCompanyRoute = () => {
 };
 
 export default ShippingCompanyRoute;
+

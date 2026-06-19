@@ -6,12 +6,14 @@ import Loader from '../../shared/components/loader/Loader';
 const NotFound = lazy(() => import('../public/NotFound/NotFound'));
 const PharmacyDashboard = lazy(() => import('./Dashboard/PharmacyDashboard'));
 const ProductList = lazy(() => import('./Products/ProductList'));
-const PharmacyOrders = lazy(() => import('./Orders/PharmacyOrders'));
+const UniversalOrders = lazy(() => import('../../shared/components/Orders/UniversalOrders'));
 const PharmacyContracts = lazy(() => import('./Contracts/PharmacyContracts'));
 const DrugSearch = lazy(() => import('../public/DrugSearch/DrugSearch'));
 const PharmacyFeed = lazy(() => import('./Feed/PharmacyFeed'));
-const PharmacyProfile = lazy(() => import('./Profile/PharmacyProfile'));
+const UniversalProfile = lazy(() => import('../../shared/components/Profile/UniversalProfile'));
 const SocialChat = lazy(() => import('../../shared/components/Social/SocialChat'));
+const PharmacySettings = lazy(() => import('./Settings/PharmacySettings'));
+const UniversalNotifications = lazy(() => import('../../shared/components/Notifications/UniversalNotifications'));
 
 const PharmacyRoute = () => {
     return (
@@ -21,9 +23,11 @@ const PharmacyRoute = () => {
                     <Route path="/" element={<PharmacyDashboard />} />
                     <Route path="/feed" element={<PharmacyFeed />} />
                     <Route path="/products" element={<ProductList />} />
-                    <Route path="/orders" element={<PharmacyOrders />} />
+                    <Route path="/orders" element={<UniversalOrders />} />
                     <Route path="/contracts" element={<PharmacyContracts />} />
-                    <Route path="/profile" element={<PharmacyProfile />} />
+                    <Route path="/profile" element={<UniversalProfile />} />
+                    <Route path="/settings" element={<PharmacySettings />} />
+                    <Route path="/notifications" element={<UniversalNotifications />} />
                     <Route path="/chat" element={<SocialChat />} />
                     <Route path="/drug-search" element={<DrugSearch />} />
                     <Route path="*" element={<NotFound />} />
@@ -34,3 +38,4 @@ const PharmacyRoute = () => {
 };
 
 export default PharmacyRoute;
+

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PharmacySidebar from "../PharmacySidebar/PharmacySidebar";
 import PharmacyHeader from "../PharmacyHeader/PharmacyHeader";
+import FloatingChatContainer from "../../../../shared/components/Social/FloatingChatBox/FloatingChatContainer";
 import "./PharmacyLayout.scss";
 
 const PharmacyLayout = ({ children, title }) => {
@@ -31,6 +32,7 @@ const PharmacyLayout = ({ children, title }) => {
         <PharmacyHeader title={title} onMenuClick={toggleMobileMenu} />
         <main className="content-inner">{children}</main>
       </div>
+      <FloatingChatContainer />
     </div>
   );
 };
