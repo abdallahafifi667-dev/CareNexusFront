@@ -6,7 +6,7 @@ import {
   Users, UserCheck, UserPlus, Activity, ShoppingBag, FileText,
   TrendingUp, ArrowUpRight, Shield,
 } from "lucide-react";
-import Seo from "../../../shared/components/SEO/SEO";
+import Seo from "../../../shared/components/SEO/Seo";
 import "./AdminDashboard.scss";
 
 // Mock dashboard data

@@ -8,7 +8,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import axiosInstance from "../../../utils/axiosInstance";
 import { toast } from "react-hot-toast";
-import Seo from "../../../shared/components/SEO/SEO";
+import Seo from "../../../shared/components/SEO/Seo";
 import { UserCheck, UserPlus, Activity, TrendingUp, ArrowUpRight } from "lucide-react";
 import "../AdminSettings.scss";
 import "./UserManagement.scss";
