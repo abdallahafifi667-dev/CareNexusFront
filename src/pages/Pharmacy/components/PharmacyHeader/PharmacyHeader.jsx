@@ -9,7 +9,7 @@ import { NotificationBell, NotificationDropdown } from "../../../../shared/compo
 import axiosInstance from "../../../../utils/axiosInstance";
 import "./PharmacyHeader.scss";
 
-const PharmacyHeader = ({ title, onMenuClick }) => {
+const PharmacyHeader = ({ title }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
@@ -56,9 +56,7 @@ const PharmacyHeader = ({ title, onMenuClick }) => {
     <>
       <header className="pharmacy-header">
         <div className="left-section">
-          <button className="mobile-menu-btn" onClick={onMenuClick}><Menu size={24} /></button>
           <div className="page-title-wrap">
-            <span className="page-icon"><Pill size={20} /></span>
             <h2 className="page-title">{displayTitle}</h2>
           </div>
         </div>

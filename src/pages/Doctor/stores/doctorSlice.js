@@ -1,5 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import doctorService from './doctorService';
+import {
+  fetchAvailableOrders,
+  fetchActiveOrders,
+  fetchHistoryOrders,
+  fetchConversations,
+  fetchDoctorReviews,
+  fetchDoctorDashboard,
+  fetchDoctorNotifications,
+} from './doctorService';
 
 // Async thunks
 export const fetchDoctorProfile = createAsyncThunk(
@@ -74,41 +83,8 @@ export const fetchDoctorPatients = createAsyncThunk(
   }
 );
 
-export const fetchDoctorReviews = createAsyncThunk(
-  'doctor/fetchReviews',
-  async (params, { rejectWithValue }) => {
-    try {
-      const response = await doctorService.getDoctorReviews(params);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch reviews');
-    }
-  }
-);
-
-export const fetchDoctorDashboard = createAsyncThunk(
-  'doctor/fetchDashboard',
-  async (params, { rejectWithValue }) => {
-    try {
-      const response = await doctorService.getDoctorDashboard(params);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch dashboard');
-    }
-  }
-);
-
-export const fetchDoctorNotifications = createAsyncThunk(
-  'doctor/fetchNotifications',
-  async (params, { rejectWithValue }) => {
-    try {
-      const response = await doctorService.getDoctorNotifications(params);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch notifications');
-    }
-  }
-);
+// NOTE: fetchDoctorReviews, fetchDoctorDashboard, fetchDoctorNotifications
+// are imported from doctorService above - do not redefine them here
 
 export const markNotificationAsRead = createAsyncThunk(
   'doctor/markNotificationRead',
@@ -272,6 +248,10 @@ const doctorSlice = createSlice({
     loading: false,
     actionLoading: false,
     error: null,
+    availableOrders: [],
+    activeOrders: [],
+    historyOrders: [],
+    conversations: [],
   },
   reducers: {
     setHeaderTitle: (state, action) => {
@@ -337,7 +317,21 @@ const doctorSlice = createSlice({
       .addCase(deleteAllNotifications.fulfilled, (state) => {
         state.notifications = [];
         state.unreadCount = 0;
-      });
+      })
+      // Orders
+      .addCase(fetchAvailableOrders.pending, (state) => { state.loading = true; })
+      .addCase(fetchAvailableOrders.fulfilled, (state, action) => { state.loading = false; state.availableOrders = action.payload; })
+      .addCase(fetchAvailableOrders.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(fetchActiveOrders.pending, (state) => { state.loading = true; })
+      .addCase(fetchActiveOrders.fulfilled, (state, action) => { state.loading = false; state.activeOrders = action.payload; })
+      .addCase(fetchActiveOrders.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(fetchHistoryOrders.pending, (state) => { state.loading = true; })
+      .addCase(fetchHistoryOrders.fulfilled, (state, action) => { state.loading = false; state.historyOrders = action.payload; })
+      .addCase(fetchHistoryOrders.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      // Conversations
+      .addCase(fetchConversations.pending, (state) => { state.loading = true; })
+      .addCase(fetchConversations.fulfilled, (state, action) => { state.loading = false; state.conversations = action.payload; })
+      .addCase(fetchConversations.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
   },
 });
 

@@ -20,6 +20,24 @@
     }
   }
 
+  .main-column {
+    .header-card {
+      position: sticky;
+      top: 96px;
+      z-index: 5;
+    }
+  }
+
+  .side-column {
+    position: sticky;
+    top: 96px;
+    align-self: flex-start;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .linkedin-card {
     background: white;
     border-radius: 12px;
@@ -209,5 +227,22 @@
       background: #f3f4f6;
       color: $primary-blue;
     }
+  }
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 768px) {
+  /* Mobile fixes */
+  [class*="page"], [class*="container"], [class*="content"] {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile fixes */
+  [class*="page"], [class*="container"], [class*="content"] {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
   }
 }

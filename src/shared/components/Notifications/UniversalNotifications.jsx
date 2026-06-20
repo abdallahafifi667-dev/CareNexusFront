@@ -270,7 +270,7 @@ export default function UniversalNotificationsPage() {
   );
 
   return (
-    <div className="universal-notifications-page">
+    <div className="universal-notifications">
       <div className="notifications-header">
         <div className="header-content">
           <div className="title-area">

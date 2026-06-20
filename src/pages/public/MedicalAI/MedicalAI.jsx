@@ -1,6 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { setHeaderTitle } from '../../Doctor/stores/doctorSlice';
 import ImageUploader from '../../../shared/components/MedicalAI/ImageUpload/ImageUploader';
 import ChatInterface from '../../../shared/components/MedicalAI/Chat/ChatInterface';
 import AnalysisResult from '../../../shared/components/MedicalAI/Analysis/AnalysisResult';
@@ -10,10 +11,12 @@ import './MedicalAI.scss';
 const MedicalAI = () => {
     const { t } = useTranslation();
     const { analysisResult } = useSelector((state) => state.aiImage);
+    const dispatch = useDispatch();
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
-    }, []);
+        dispatch(setHeaderTitle(t('nav.medical_ai', { defaultValue: 'Medical AI' })));
+    }, [dispatch, t]);
 
     const features = [
         {

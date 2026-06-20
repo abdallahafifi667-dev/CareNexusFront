@@ -71,6 +71,17 @@
     display: flex;
     flex-direction: column;
     gap: $sp-md;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+    padding-right: $sp-xs;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($text-muted, 0.2);
+      border-radius: 4px;
+    }
 
     .master-header {
       display: flex;
@@ -230,6 +241,19 @@
     @include floating-card;
     background: $clr-white;
     overflow: hidden;
+    position: sticky;
+    top: 96px;
+    align-self: flex-start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba($text-muted, 0.2);
+      border-radius: 4px;
+    }
 
     .detail-panel {
       padding: $sp-xl;
@@ -455,6 +479,54 @@
       color: $clr-primary;
     }
   }
+}
+
+// ===== RESPONSIVE =====
+@media (max-width: 768px) {
+  .marketplace-page {
+    padding: $sp-md;
+
+    .marketplace-hero {
+      flex-direction: column;
+      padding: $sp-lg;
+      text-align: center;
+
+      .hero-copy h1 { font-size: 1.5rem; }
+      .hero-pill { display: none; }
+    }
+
+    .marketplace-content-wrapper { gap: $sp-md; }
+
+    .marketplace-master {
+      .master-header h2 { font-size: 0.9rem; }
+      .product-list-master .master-item {
+        flex-direction: row;
+        gap: $sp-sm;
+        padding: $sp-sm;
+        .item-img { width: 60px; height: 60px; }
+        .item-info h4 { font-size: 0.85rem; }
+        .item-info .price { font-size: 0.9rem; }
+      }
+    }
+
+    .marketplace-detail {
+      .detail-panel { padding: $sp-md; }
+      .detail-header {
+        flex-direction: column;
+        gap: $sp-md;
+        .main-image { width: 100%; height: auto; max-height: 200px; }
+        .header-meta h1 { font-size: 1.2rem; }
+      }
+      .detail-body {
+        .specs ul { grid-template-columns: 1fr; }
+        .detail-actions { flex-direction: column; }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .marketplace-page { padding: $sp-sm; }
 }
 
 @keyframes fadeIn {
