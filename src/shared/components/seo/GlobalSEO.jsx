@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import Seo from './SEO';
+import Seo from './Seo';
 
 const GlobalSEO = () => {
   const location = useLocation();
